@@ -3,64 +3,71 @@ package cinema;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
 @JsonPropertyOrder({"total_rows", "total_columns", "available_seats"})
 public class Room {
-    private int total_rows = 9;
-    private int total_columns = 9;
-    private ArrayList<Seat> available_seats;
+    private int totalRows = 9;
+    private int totalColumns = 9;
+    private ArrayList<Seat> availableSeats;
 
     public Room() {
-        this.available_seats = new ArrayList<>();
-        for (int i = 1; i <= total_rows; i++) {
-            for (int j = 1; j <= total_columns; j++) {
-                this.available_seats.add(new Seat(i,j));
+        this.availableSeats = new ArrayList<>();
+        for (int i = 1; i <= totalRows; i++) {
+            for (int j = 1; j <= totalColumns; j++) {
+                if (i <= 4) {
+                    this.availableSeats.add(new Seat(i, j, 10));
+                } else {
+                    this.availableSeats.add(new Seat(i, j, 8));
+                }
             }
         }
     }
 
     public List<Seat> assignSeats() {
-        return this.available_seats;
+        return this.availableSeats;
     }
 
     @JsonProperty("total_rows")
     public int getTotalRows() {
-        return this.total_rows;
+        return this.totalRows;
     }
 
-    public void setTotal_Rows(int totalRows) {
-        this.total_rows = totalRows;
+    public void setTotalRows(int totalRows) {
+        this.totalRows = totalRows;
     }
 
     @JsonProperty("total_columns")
     public int getTotalColumns() {
-        return this.total_columns;
+        return this.totalColumns;
     }
 
     public void setTotalColumns(int totalColumns) {
-        this.total_columns = totalColumns;
+        this.totalColumns = totalColumns;
     }
 
     @JsonProperty("available_seats")
     public ArrayList<Seat> getAvailableSeats() {
-        return available_seats;
+        return availableSeats;
     }
 
     public void setAvailableSeats(ArrayList<Seat> availableSeats) {
-        this.available_seats = availableSeats;
-
+        this.availableSeats = availableSeats;
     }
 
-    @GetMapping("/seats")
-    public Room room() {
-        return new Room();
+    public Seat buySeat(int row, int column) {
+        int count = 0;
+        for (Seat x : this.availableSeats) {
+            if (x.getRow() == row && x.getColumn() == column) {
+                x.setTaken(true);
+                this.availableSeats.remove(count);
+                return x;
+            }
+            count++;
+        }
+        return null;
     }
-
 
 }
