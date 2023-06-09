@@ -53,8 +53,4 @@ public class Seat {
         isTaken = taken;
     }
 
-
-    //    public String toString() {
-//    }
-
 }

@@ -17,11 +17,6 @@ public class Token {
     public Token(String uuid) {
         this.token = uuid;
     }
-//    @JsonProperty("token")
-//    public String getUuid() {
-//        return String.valueOf(token);
-//    }
-
 
     public String getToken() {
         return token;

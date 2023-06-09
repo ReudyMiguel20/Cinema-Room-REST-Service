@@ -29,6 +29,7 @@ public class Room {
         return this.availableSeats;
     }
 
+    //This method is for sorting the list after a ticket gets added back to the available seats after being returned
     public void sortList() {
         Comparator<Seat> comparator = Comparator
                 .comparing(Seat::getRow)
@@ -90,7 +91,6 @@ public class Room {
         Seat returnedSeat = new Seat(row, column, price);
         availableSeats.add(returnedSeat);
         sortList();
-
     }
 
 }
