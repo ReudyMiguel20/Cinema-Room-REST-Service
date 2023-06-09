@@ -1,12 +1,16 @@
 package cinema.RoomManagement;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+
 @JsonPropertyOrder({"total_rows", "total_columns", "available_seats"})
+@Component
 public class Room {
     private int totalRows = 9;
     private int totalColumns = 9;

@@ -1,4 +1,4 @@
-package cinema.RoomManagement;
+package cinema.Rest;
 
 import cinema.RoomManagement.Room;
 import cinema.RoomManagement.Seat;
@@ -6,17 +6,24 @@ import cinema.TicketManagement.ReturnedTicket;
 import cinema.TicketManagement.SoldTickets;
 import cinema.TicketManagement.Ticket;
 import cinema.TicketManagement.Token;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
+@Component
 public class CinemaManagement {
     private Room room;
     private SoldTickets soldTickets;
 
+    @Autowired
     public CinemaManagement() {
         this.soldTickets = new SoldTickets();
         this.room = new Room();
@@ -67,6 +74,13 @@ public class CinemaManagement {
         Ticket soldTicket = new Ticket(token, purchasedSeat);
         this.soldTickets.add(soldTicket);
 
+        //Adding +1 to tickets sold and adding the price of the ticket to profit
+        this.soldTickets.setSoldTicketsInTotal();
+        this.soldTickets.setProfitTicketsInTotal(purchasedSeat.getPrice());
+
+        System.out.println(this.soldTickets.getProfitTicketsInTotal());
+        System.out.println(soldTickets);
+
         //Returning the ticket
         return ResponseEntity.ok(soldTicket);
     }
@@ -90,5 +104,16 @@ public class CinemaManagement {
         return ResponseEntity.ok(tempReturnedTicket);
     }
 
+    public int returnTotalSeats() {
+        return this.room.getAvailableSeats().size();
+    }
+
+    public int returnTotalTicketsSold() {
+        return this.soldTickets.getSoldTicketsInTotal();
+    }
+
+    public int returnTotalMoney() {
+        return this.soldTickets.getProfitTicketsInTotal();
+    }
 
 }
