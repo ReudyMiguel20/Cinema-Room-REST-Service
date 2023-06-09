@@ -1,6 +1,9 @@
-package cinema;
+package cinema.RoomManagement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class Seat {
     private int row;
@@ -49,5 +52,9 @@ public class Seat {
     public void setTaken(boolean taken) {
         isTaken = taken;
     }
+
+
+    //    public String toString() {
+//    }
 
 }

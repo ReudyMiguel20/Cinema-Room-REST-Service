@@ -1,11 +1,10 @@
-package cinema;
+package cinema.RoomManagement;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @JsonPropertyOrder({"total_rows", "total_columns", "available_seats"})
 public class Room {
@@ -28,6 +27,15 @@ public class Room {
 
     public List<Seat> assignSeats() {
         return this.availableSeats;
+    }
+
+    public void sortList() {
+        Comparator<Seat> comparator = Comparator
+                .comparing(Seat::getRow)
+                .thenComparing(Seat::getColumn)
+                .thenComparing(Seat::getPrice);
+
+        availableSeats.sort(comparator);
     }
 
     @JsonProperty("total_rows")
@@ -68,6 +76,21 @@ public class Room {
             count++;
         }
         return null;
+    }
+
+    public void returnSeat(int row, int column) {
+        int price = 0;
+
+        if (row <= 4) {
+            price = 10;
+        } else {
+            price = 8;
+        }
+
+        Seat returnedSeat = new Seat(row, column, price);
+        availableSeats.add(returnedSeat);
+        sortList();
+
     }
 
 }
